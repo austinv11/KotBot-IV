@@ -14,8 +14,8 @@
     <bytecodeTargetLevel>
       <module name="Core_main" target="1.8" />
       <module name="Core_test" target="1.8" />
-      <module name="Launcher_main" target="1.5" />
-      <module name="Launcher_test" target="1.5" />
+      <module name="Launcher_main" target="1.8" />
+      <module name="Launcher_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

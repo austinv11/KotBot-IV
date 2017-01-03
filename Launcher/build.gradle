@@ -1,4 +1,4 @@
-group 'com.austinv11.kbot.launcher'
+group 'com.austinv11.kotbot.launch'
 version '1.0.0'
 
 buildscript {
