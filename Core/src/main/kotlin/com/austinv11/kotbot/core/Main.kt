@@ -1,19 +1,24 @@
 package com.austinv11.kotbot.core
 
 import com.austinv11.kotbot.core.scripting.ScriptManager
+import com.austinv11.kotbot.core.util.ModuleObjectCleaner
 import sx.blah.discord.Discord4J
 import sx.blah.discord.api.ClientBuilder
 import sx.blah.discord.api.IDiscordClient
 
 internal val LOGGER = Discord4J.Discord4JLogger("KotBot") //TODO: Use a real logging impl
+
 internal val CLIENT: IDiscordClient
     get() = _client!!
-
 private var _client: IDiscordClient? = null
+
 val IDiscordClient.scriptManager: ScriptManager
     get() = _scriptManager!!
-
 private var _scriptManager: ScriptManager? = null
+
+val IDiscordClient.moduleObjectCleaner: ModuleObjectCleaner
+    get() = _moduleObjectCleaner!!
+internal var _moduleObjectCleaner: ModuleObjectCleaner? = null
 
 fun main(args: Array<String>) {
     if (args.isEmpty())
@@ -28,6 +33,8 @@ fun main(args: Array<String>) {
             .withToken(token)
             .setMaxReconnectAttempts(20)
             .login()
+
+    _moduleObjectCleaner = ModuleObjectCleaner(CLIENT)
     
     _scriptManager = ScriptManager(CLIENT)
 }
