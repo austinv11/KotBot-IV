@@ -28,6 +28,8 @@ fun main(args: Array<String>) {
         (Discord4J.LOGGER as Discord4J.Discord4JLogger).setLevel(Discord4J.Discord4JLogger.Level.DEBUG)
     }
     
+    LOGGER.info("Launching KotBot...")
+    
     val token = args[0]
     _client = ClientBuilder()
             .withToken(token)
