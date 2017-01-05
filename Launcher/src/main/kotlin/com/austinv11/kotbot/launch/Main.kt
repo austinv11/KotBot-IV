@@ -19,36 +19,47 @@ fun main(args: Array<String>) {
     
     val token = args[0]
     
+    installUpdate()
+    
+    println("Launching the bot...")
+    do {
+        val returnVal = runBot(token)
+        if (returnVal == -1) //Update
+            installUpdate()
+    } while (returnVal != 0) //This ensures 100% uptime
+}
+
+fun runBot(token: String): Int = ProcessBuilder("java", "-jar", File(INSTALLATION_DIR).absolutePath, token).inheritIO().start().waitFor()
+
+fun installUpdate(): Boolean {
     val mirror = File(REPO_MIRROR_DIR)
     val bot = File(INSTALLATION_DIR)
     val commit = File(COMMIT_CACHE)
-    
+
     val latestCommit = getLatestCommit()
     if (!mirror.exists() || !commit.exists() || !bot.exists() || commit.readText() != latestCommit) { //Time to (re)install
         println("Updating the bot...")
-        
+
         if (bot.exists())
             bot.delete()
-        
+
         if (mirror.exists())
             mirror.deleteRecursively()
-        
+
         println("Cloning the git repo...")
         if (ProcessBuilder("git", "clone", GIT_REPO, REPO_MIRROR_DIR).inheritIO().start().waitFor() != 0)
             exitProcess(1)
 
         commit.writeText(latestCommit)
-        
+
         println("Building the bot...")
         ProcessBuilder("./gradlew", "build").inheritIO().directory(File(REPO_MIRROR_DIR+"Core/")).start().waitFor()
         Files.move(Paths.get(REPO_MIRROR_DIR+"Core/build/libs/Core-1.0-all.jar"), Paths.get(INSTALLATION_DIR))
+        return true
     }
     
-    println("Launching the bot...")
-    while (runBot(token) != 0) {} //This ensures 100% uptime
+    return false
 }
-
-fun runBot(token: String): Int = ProcessBuilder("java", "-jar", File(INSTALLATION_DIR).absolutePath, token).inheritIO().start().waitFor()
 
 fun getLatestCommit(): String {
     val (_, response, result) = COMMIT_URL.httpGet().responseString()
