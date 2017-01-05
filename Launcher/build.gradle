@@ -21,7 +21,7 @@ apply plugin: 'application'
 apply plugin: 'maven'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-mainClassName = 'com.austinv11.kotbot.core.MainKt'
+mainClassName = 'com.austinv11.kotbot.launch.MainKt'
 
 sourceCompatibility = 1.8
 
