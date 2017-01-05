@@ -121,3 +121,5 @@ crashlytics-build.properties
 fabric.properties
 /modules/
 /.idea/
+/git_mirror/
+!gradle-wrapper.jar
