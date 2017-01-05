@@ -21,7 +21,10 @@ object Config : IConfig {
         save()
     }
 
-    override var command_prefix: String by ConfigDelegate()
+    override var command_prefix: Char by ConfigDelegate()
+    override var command_error_format: String by ConfigDelegate()
+    override var default_command_success_message: String by ConfigDelegate()
+    override var default_command_failure_message: String by ConfigDelegate()
 
     fun save() {
         val writer = FILE.writer()
@@ -47,9 +50,15 @@ object Config : IConfig {
         }
     }
 
-    private data class BackingConfigObject(override var command_prefix: String = "~"): IConfig
+    private data class BackingConfigObject(override var command_prefix: Char = '~',
+                                           override var command_error_format: String = ":warning: %s",
+                                           override var default_command_success_message: String = ":ok_hand:", 
+                                           override var default_command_failure_message: String = ":x:"): IConfig
 }
 
 interface IConfig {
-    var command_prefix: String
+    var command_prefix: Char
+    var command_error_format: String
+    var default_command_success_message: String
+    var default_command_failure_message: String
 }

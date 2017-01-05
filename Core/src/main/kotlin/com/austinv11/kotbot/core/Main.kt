@@ -1,5 +1,6 @@
 package com.austinv11.kotbot.core
 
+import com.austinv11.kotbot.core.api.commands.CommandRegistry
 import com.austinv11.kotbot.core.scripting.ScriptManager
 import com.austinv11.kotbot.core.util.ModuleObjectCleaner
 import sx.blah.discord.Discord4J
@@ -39,4 +40,6 @@ fun main(args: Array<String>) {
     _moduleObjectCleaner = ModuleObjectCleaner(CLIENT)
     
     _scriptManager = ScriptManager(CLIENT)
+    
+    CommandRegistry.init(CLIENT)
 }
