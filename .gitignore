@@ -123,3 +123,4 @@ fabric.properties
 /.idea/
 /git_mirror/
 !gradle-wrapper.jar
+/config.json
