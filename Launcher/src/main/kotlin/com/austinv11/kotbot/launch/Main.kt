@@ -43,7 +43,12 @@ fun main(args: Array<String>) {
         ProcessBuilder("./gradlew", "build").inheritIO().directory(File(REPO_MIRROR_DIR+"Core/")).start().waitFor()
         Files.move(Paths.get(REPO_MIRROR_DIR+"Core/build/libs/Core-1.0-all.jar"), Paths.get(INSTALLATION_DIR))
     }
+    
+    println("Launching the bot...")
+    while (runBot(token) != 0) {} //This ensures 100% uptime
 }
+
+fun runBot(token: String): Int = ProcessBuilder("jar", "-jar", File(INSTALLATION_DIR).absolutePath, token).inheritIO().start().waitFor()
 
 fun getLatestCommit(): String {
     val (_, response, result) = COMMIT_URL.httpGet().responseString()
