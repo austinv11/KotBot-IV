@@ -48,7 +48,7 @@ fun main(args: Array<String>) {
     while (runBot(token) != 0) {} //This ensures 100% uptime
 }
 
-fun runBot(token: String): Int = ProcessBuilder("jar", "-jar", File(INSTALLATION_DIR).absolutePath, token).inheritIO().start().waitFor()
+fun runBot(token: String): Int = ProcessBuilder("java", "-jar", File(INSTALLATION_DIR).absolutePath, token).inheritIO().start().waitFor()
 
 fun getLatestCommit(): String {
     val (_, response, result) = COMMIT_URL.httpGet().responseString()
