@@ -1,6 +1,7 @@
 package com.austinv11.kotbot.core.scripting
 
 import com.austinv11.kotbot.core.LOGGER
+import org.jetbrains.kotlin.script.jsr223.KotlinJsr223JvmLocalScriptEngineFactory
 import sx.blah.discord.api.IDiscordClient
 import sx.blah.discord.modules.IModule
 import java.io.File
@@ -9,13 +10,12 @@ import java.nio.file.Path
 import java.nio.file.StandardWatchEventKinds
 import java.nio.file.WatchService
 import javax.script.ScriptEngine
-import javax.script.ScriptEngineManager
 import kotlin.concurrent.thread
 
 class ScriptManager(val client: IDiscordClient) {
-    val scriptFactory = ScriptEngineManager().getEngineByExtension("kts").factory!!
+    val scriptFactory = KotlinJsr223JvmLocalScriptEngineFactory() //Skipping the indirect invocation from java because the shadow jar breaks the javax service
     val engine: ScriptEngine
-        get() = scriptFactory.scriptEngine!!
+        get() = scriptFactory.scriptEngine
     val modulesPath = File("./modules").toPath()
     val modules = mutableMapOf<File, IModule>()
 
