@@ -53,14 +53,14 @@ fun main(args: Array<String>) {
                     override fun handle(event: ReconnectFailureEvent) {
                         if (event.isShardAbandoned) {
                             println("Unable to reconnect, attempting a hard restart...")
-                            exitProcess(1) //Non-zero exitcode should lead to a restart
+                            restart() //Non-zero exitcode should lead to a restart
                         }
                     }
                 })
                 .login()
     } catch (e: DiscordException) {
         LOGGER.error("Unable to launch bot! Closing launcher...", e)
-        exitProcess(0) //Using 0 to prevent boot loops
+        shutdown() //Using 0 to prevent boot loops
     }
 
     _moduleObjectCleaner = ModuleObjectCleaner(CLIENT)
@@ -69,3 +69,9 @@ fun main(args: Array<String>) {
     
     CommandRegistry.init(CLIENT)
 }
+
+fun shutdown(): Nothing = exitProcess(0)
+
+fun restart(): Nothing = exitProcess(1)
+
+fun update(): Nothing = exitProcess(-1)
