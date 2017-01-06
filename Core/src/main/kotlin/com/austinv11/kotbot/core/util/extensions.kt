@@ -6,9 +6,24 @@ import sx.blah.discord.handle.obj.IChannel
 import sx.blah.discord.handle.obj.IDiscordObject
 import sx.blah.discord.handle.obj.IMessage
 import sx.blah.discord.handle.obj.IUser
-import sx.blah.discord.util.MessageTokenizer
 import sx.blah.discord.util.RequestBuffer
+import java.awt.Color
 import java.util.*
+
+val KOTLIN_BLURPLE = Color(118, 108, 180)
+val KOTLIN_BLUE = Color(5, 148, 214)
+val KOTLIN_PINK = Color(185, 90, 165)
+val KOTLIN_ORANGE = Color(248, 138, 0)
+
+fun generateRandomKotlinColor(): Color {
+    when(Random().nextInt(4)) {
+        0 -> return KOTLIN_BLURPLE
+        1 -> return KOTLIN_BLUE
+        2 -> return KOTLIN_PINK
+        3 -> return KOTLIN_ORANGE
+    }
+    return KOTLIN_ORANGE
+}
 
 /**
  * This checks if a specified event has a field which has an object with the same id as the provided object.

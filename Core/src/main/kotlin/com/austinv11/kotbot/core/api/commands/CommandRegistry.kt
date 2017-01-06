@@ -52,6 +52,7 @@ object CommandRegistry {
                     
                     if (command.requiredLevel.ordinal > event.author.retrievePermissionLevel().ordinal) {
                         buffer { event.channel.sendMessage(Config.missing_permission_message.format(command.requiredLevel.toString())) }
+                        return
                     }
 
                     val remainingContent = tokenizer.remainingContent
