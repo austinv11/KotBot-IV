@@ -38,7 +38,5 @@
     </content>
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: com.github.austinv11:Discord4j:3344632" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.austinv11:Discord4j:3344632" level="project" />
   </component>
 </module>

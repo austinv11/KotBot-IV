@@ -12,7 +12,15 @@
               <K2JSCompilerArguments />
             </option>
             <option name="_commonCompilerArguments">
-              <DummyImpl />
+              <DummyImpl>
+                <option name="pluginClasspaths">
+                  <array />
+                </option>
+                <option name="coroutinesWarn" value="true" />
+                <option name="pluginOptions">
+                  <array />
+                </option>
+              </DummyImpl>
             </option>
           </KotlinCompilerInfo>
         </option>
@@ -68,6 +76,10 @@
     <orderEntry type="library" name="Gradle: com.googlecode.soundlibs:tritonus-share:0.3.7.4" level="project" />
     <orderEntry type="library" name="Gradle: org.tritonus:tritonus-dsp:0.3.6" level="project" />
     <orderEntry type="library" name="Gradle: com.j256.ormlite:ormlite-core:5.0" level="project" />
+    <orderEntry type="library" name="Gradle: nl.komponents.kovenant:kovenant-combine:3.3.0" level="project" />
+    <orderEntry type="library" name="Gradle: nl.komponents.kovenant:kovenant-core:3.3.0" level="project" />
+    <orderEntry type="library" name="Gradle: nl.komponents.kovenant:kovenant-functional:3.3.0" level="project" />
+    <orderEntry type="library" name="Gradle: nl.komponents.kovenant:kovenant-jvm:3.3.0" level="project" />
     <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains:annotations:13.0" level="project" />
     <orderEntry type="library" name="Gradle: org.hibernate:hibernate-validator:5.1.2.Final" level="project" />

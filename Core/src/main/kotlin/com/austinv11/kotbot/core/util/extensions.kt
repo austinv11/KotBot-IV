@@ -30,7 +30,7 @@ fun generateRandomKotlinColor(): Color {
 /**
  * This creates a standardized embed builder.
  */
-fun createEmbedBuilder() = EmbedBuilder().withFooterText("Owned by ${OWNER.name}").withFooterIcon(OWNER.avatarURL).withColor(generateRandomKotlinColor())
+fun createEmbedBuilder() = EmbedBuilder().withFooterText("Owned by ${OWNER.name}#${OWNER.discriminator}").withFooterIcon(OWNER.avatarURL).withColor(generateRandomKotlinColor())
 
 /**
  * This checks if a specified event has a field which has an object with the same id as the provided object.
