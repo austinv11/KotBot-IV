@@ -51,7 +51,7 @@ fun main(args: Array<String>) {
     
     LOGGER.info("Launching KotBot...")
     
-    System.setProperty("kotlin.compiler.jar", args::class.java.protectionDomain.codeSource.location.toURI().path)
+    System.setProperty("kotlin.compiler.jar", Config::class.java.protectionDomain.codeSource.location.toURI().path)
     
     Config //Initializes the config
     
