@@ -1,11 +1,13 @@
 package com.austinv11.kotbot.core.util
 
+import com.austinv11.kotbot.core.OWNER
 import com.austinv11.kotbot.core.api.commands.Command
 import sx.blah.discord.api.events.Event
 import sx.blah.discord.handle.obj.IChannel
 import sx.blah.discord.handle.obj.IDiscordObject
 import sx.blah.discord.handle.obj.IMessage
 import sx.blah.discord.handle.obj.IUser
+import sx.blah.discord.util.EmbedBuilder
 import sx.blah.discord.util.RequestBuffer
 import java.awt.Color
 import java.util.*
@@ -24,6 +26,11 @@ fun generateRandomKotlinColor(): Color {
     }
     return KOTLIN_ORANGE
 }
+
+/**
+ * This creates a standardized embed builder.
+ */
+fun createEmbedBuilder() = EmbedBuilder().withFooterText("Owned by ${OWNER.name}").withFooterIcon(OWNER.avatarURL).withColor(generateRandomKotlinColor())
 
 /**
  * This checks if a specified event has a field which has an object with the same id as the provided object.

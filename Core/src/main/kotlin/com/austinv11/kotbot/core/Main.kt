@@ -14,9 +14,9 @@ import sx.blah.discord.handle.obj.IUser
 import sx.blah.discord.util.DiscordException
 import kotlin.system.exitProcess
 
-internal val LOGGER = Discord4J.Discord4JLogger("KotBot") //TODO: Use a real logging impl
+val LOGGER = Discord4J.Discord4JLogger("KotBot") //TODO: Use a real logging impl
 
-internal val CLIENT: IDiscordClient
+val CLIENT: IDiscordClient
     get() = _client!!
 private var _client: IDiscordClient? = null
 
@@ -51,7 +51,7 @@ fun main(args: Array<String>) {
     
     LOGGER.info("Launching KotBot...")
     
-    System.setProperty("kotlin.compiler.jar", Config::class.java.protectionDomain.codeSource.location.toURI().path)
+    System.setProperty("kotlin.compiler.jar", Config::class.java.protectionDomain.codeSource.location.toURI().path) //Hack to fix missing properties when compiled to a shadow jar
     
     Config //Initializes the config
     
