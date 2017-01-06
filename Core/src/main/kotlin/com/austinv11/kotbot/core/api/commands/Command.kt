@@ -4,6 +4,7 @@ import com.austinv11.kotbot.core.util.ModuleDependentObject
 
 abstract class Command(val description: String, 
                        val aliases: Array<String> = arrayOf(), 
+                       val requiredLevel: PermissionLevel = PermissionLevel.BASIC,
                        val nameOverride: String? = null) : ModuleDependentObject {
     
     val name: String

@@ -49,6 +49,10 @@ object CommandRegistry {
 
                     //Getting the command
                     val command = commands.firstOrNull { it.doesCommandMatch(commandName) } ?: return
+                    
+                    if (command.requiredLevel.ordinal > event.author.retrievePermissionLevel().ordinal) {
+                        buffer { event.channel.sendMessage(Config.missing_permission_message.format(command.requiredLevel.toString())) }
+                    }
 
                     val remainingContent = tokenizer.remainingContent
                     val nargs = if (tokenizer.hasNext()) remainingContent.split(" ").size else 0

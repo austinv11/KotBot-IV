@@ -10,6 +10,7 @@ import sx.blah.discord.api.IDiscordClient
 import sx.blah.discord.api.events.IListener
 import sx.blah.discord.handle.impl.events.ReadyEvent
 import sx.blah.discord.handle.impl.events.shard.ReconnectFailureEvent
+import sx.blah.discord.handle.obj.IUser
 import sx.blah.discord.util.DiscordException
 import kotlin.system.exitProcess
 
@@ -26,6 +27,19 @@ private var _scriptManager: ScriptManager? = null
 val IDiscordClient.moduleObjectCleaner: ModuleObjectCleaner
     get() = _moduleObjectCleaner!!
 internal var _moduleObjectCleaner: ModuleObjectCleaner? = null
+
+val OWNER: IUser
+    get() {
+        if (_owner == null)
+            _owner = CLIENT.applicationOwner
+        
+        return _owner!!
+    }
+
+private var _owner: IUser? = null
+
+val IUser.isOwner: Boolean
+    get() = this == OWNER
 
 fun main(args: Array<String>) {
     if (args.isEmpty())
