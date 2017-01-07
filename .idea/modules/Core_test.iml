@@ -12,15 +12,7 @@
               <K2JSCompilerArguments />
             </option>
             <option name="_commonCompilerArguments">
-              <DummyImpl>
-                <option name="pluginClasspaths">
-                  <array />
-                </option>
-                <option name="coroutinesWarn" value="true" />
-                <option name="pluginOptions">
-                  <array />
-                </option>
-              </DummyImpl>
+              <DummyImpl />
             </option>
           </KotlinCompilerInfo>
         </option>
@@ -49,7 +41,7 @@
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib:1.1-M04" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-reflect:1.1-M04" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-script-util:1.1-M04" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.austinv11:Discord4j:3344632" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.austinv11:Discord4j:81e604d" level="project" />
     <orderEntry type="library" name="Gradle: org.xerial:sqlite-jdbc:3.15.1" level="project" />
     <orderEntry type="library" name="Gradle: com.j256.ormlite:ormlite-jdbc:5.0" level="project" />
     <orderEntry type="library" name="Gradle: junit:junit:4.11" level="project" />

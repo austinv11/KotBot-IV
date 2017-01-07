@@ -29,63 +29,67 @@ object CommandRegistry {
         override fun handle(event: MessageReceivedEvent) { //I hate command parsing
             try {
                 //Figuring out if a message is a command call
-                val tokenizer = event.message.tokenize()
-                if (tokenizer.hasNextChar()) {
-                    val char = tokenizer.nextChar()
-                    if (char != Config.command_prefix) { //Message did not start with the command prefix, maybe it's a direct mention?
-                        tokenizer.stepTo(0)
-                        if (!tokenizer.hasNextMention())
-                            return //Nope
+                if (!event.message.content.isNullOrEmpty()) {
+                    val tokenizer = event.message.tokenize()
+                    if (tokenizer.hasNextChar()) {
+                        val char = tokenizer.nextChar()
+                        if (char != Config.command_prefix) { //Message did not start with the command prefix, maybe it's a direct mention?
+                            tokenizer.stepTo(0)
+                            if (!tokenizer.hasNextMention())
+                                return //Nope
 
-                        val mention = tokenizer.nextMention()
-                        if (!(mention.startIndex == 0
-                                && (mention.mentionObject is IUser)
-                                && mention.mentionObject == CLIENT.ourUser)) {
-                            return //Nope
+                            val mention = tokenizer.nextMention()
+                            if (!(mention.startIndex == 0
+                                    && (mention.mentionObject is IUser)
+                                    && mention.mentionObject == CLIENT.ourUser)) {
+                                return //Nope
+                            }
                         }
-                    }
 
-                    val commandName = tokenizer.nextWord().content
+                        val commandName = tokenizer.nextWord().content
 
-                    //Getting the command
-                    val command = commands.firstOrNull { it.doesCommandMatch(commandName) } ?: return
-                    
-                    if (command.requiredLevel.ordinal > event.author.retrievePermissionLevel().ordinal) {
-                        buffer { event.channel.sendMessage(Config.missing_permission_message.format(command.requiredLevel.toString())) }
-                        return
-                    }
+                        //Getting the command
+                        val command = commands.firstOrNull { it.doesCommandMatch(commandName) } ?: return
 
-                    val remainingContent = tokenizer.remainingContent
-                    val nargs = if (tokenizer.hasNext()) remainingContent.split(" ").size else 0
-                    
-                    val executors = command::class.declaredFunctions
-                            .filter { it.findAnnotation<Executor>() != null 
-                                    && (it.valueParameters.size <= nargs || it.minimumParamCount <= nargs) }
+                        if (command.requiredLevel.ordinal > event.author.retrievePermissionLevel().ordinal) {
+                            buffer { event.channel.sendMessage(Config.missing_permission_message.format(command.requiredLevel.toString())) }
+                            return
+                        }
 
-                    val hash = Objects.hash(Thread.currentThread(), command.javaClass.name)
-                    contextMap[hash] = CommandContext(event.message)
-                    
-                    try {
-                        if (nargs == 0 && executors.isEmpty()) { //Time for fluent execution :D
-                            TODO("Fluent interpretation is not available yet")
-                        } else if (executors.isNotEmpty()) {
-                            executors.sortedWith(Comparator<KFunction<*>> { o1, o2 -> o1.valueParameters.size.compareTo(o2.valueParameters.size) })
-                                    .forEach {
-                                        val split = splitToNArgs(remainingContent, it.valueParameters.size)
-                                        if (split.size == nargs) {
-                                            val invocationResult = invokeFunction(event.message, command, it, split)
-                                            if (invocationResult != null) {
-                                                buffer { invocationResult.parseToMessage(event.channel) }
-                                                return@handle
+                        val remainingContent = tokenizer.remainingContent
+                        val nargs = if (tokenizer.hasNext()) remainingContent.split(" ").size else 0
+
+                        val executors = command::class.declaredFunctions
+                                .filter {
+                                    it.findAnnotation<Executor>() != null
+                                            && (it.valueParameters.size <= nargs || it.minimumParamCount <= nargs)
+                                }
+
+                        val hash = Objects.hash(Thread.currentThread(), command.javaClass.name)
+                        contextMap[hash] = CommandContext(event.message)
+
+                        try {
+                            if (nargs == 0 && executors.isEmpty()) { //Time for fluent execution :D
+                                TODO("Fluent interpretation is not available yet")
+                            } else if (executors.isNotEmpty()) {
+                                executors.sortedWith(Comparator<KFunction<*>> { o1, o2 -> o1.valueParameters.size.compareTo(o2.valueParameters.size) })
+                                        .forEach {
+                                            val split = splitToNArgs(remainingContent, it.valueParameters.size)
+                                            if (split.size == nargs) {
+                                                val invocationResult = invokeFunction(event.message, command, it, split)
+                                                if (invocationResult != null) {
+                                                    buffer { invocationResult.parseToMessage(event.channel) }
+                                                    return@handle
+                                                }
                                             }
                                         }
-                                    }
-                            throw IllegalArgumentException("Unable to properly handle provided arguments!")
-                        } else {
-                            buffer { event.channel.sendMessage(Config.command_error_format.format("Cannot execute command with $nargs args!")) }
+                                throw IllegalArgumentException("Unable to properly handle provided arguments!")
+                            } else {
+                                buffer { event.channel.sendMessage(Config.command_error_format.format("Cannot execute command with $nargs args!")) }
+                            }
+                        } finally {
+                            contextMap.remove(hash)
                         }
-                    } finally {
-                        contextMap.remove(hash)
                     }
                 }
             } catch (e: Throwable) {
