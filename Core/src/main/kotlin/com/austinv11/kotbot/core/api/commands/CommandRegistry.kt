@@ -16,6 +16,7 @@ import sx.blah.discord.util.MessageBuilder
 import java.lang.reflect.InvocationTargetException
 import java.util.*
 import kotlin.reflect.*
+import kotlin.reflect.jvm.jvmErasure
 
 object CommandRegistry {
     
@@ -222,6 +223,12 @@ object CommandRegistry {
                 }
             } else if (desiredType.isSubtypeOf(IInvite::class.starProjectedType)) {
                 return CLIENT.getInviteForCode(value)
+            } else if (desiredType.jvmErasure.java.isEnum) {
+                try {
+                    return desiredType.jvmErasure.java.getMethod("valueOf", String::class.java).invoke(null, value.toUpperCase())
+                } catch (e: Throwable) {
+                    return null
+                }
             } else {
                 return null
             }
