@@ -13,6 +13,7 @@ import sx.blah.discord.handle.impl.events.guild.channel.message.MessageReceivedE
 import sx.blah.discord.handle.obj.*
 import sx.blah.discord.util.EmbedBuilder
 import sx.blah.discord.util.MessageBuilder
+import java.lang.reflect.InvocationTargetException
 import java.util.*
 import kotlin.reflect.*
 
@@ -140,6 +141,9 @@ object CommandRegistry {
                 convertedParams.put(function.instanceParameter!!, instance)
                 return ObjectHolder(function.callBy(convertedParams))
             } catch (e: Throwable) {
+                if (e is InvocationTargetException) {
+                    throw e.targetException
+                }
                 return null
             }
         }
