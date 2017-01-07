@@ -96,7 +96,9 @@ object CommandRegistry {
                 }
             } catch (e: Throwable) {
                 buffer { event.channel.sendMessage(Config.command_error_format.format(e.message)) }
-                e.printStackTrace()
+                
+                if (e !is CommandException)
+                    e.printStackTrace()
             }
         }
         
@@ -144,7 +146,8 @@ object CommandRegistry {
             } catch (e: Throwable) {
                 if (e is InvocationTargetException) {
                     throw e.targetException
-                }
+                } else if (e is CommandException)
+                    throw e
                 return null
             }
         }
