@@ -1,6 +1,5 @@
 package com.austinv11.kotbot.core.util
 
-import com.austinv11.kotbot.core.CLIENT
 import com.austinv11.kotbot.core.OWNER
 import com.austinv11.kotbot.core.api.commands.Command
 import sx.blah.discord.api.events.Event
@@ -8,16 +7,23 @@ import sx.blah.discord.handle.obj.IChannel
 import sx.blah.discord.handle.obj.IDiscordObject
 import sx.blah.discord.handle.obj.IMessage
 import sx.blah.discord.handle.obj.IUser
+import sx.blah.discord.modules.IModule
 import sx.blah.discord.util.EmbedBuilder
 import sx.blah.discord.util.RequestBuffer
 import java.awt.Color
 import java.util.*
+import kotlin.reflect.allSupertypes
+import kotlin.reflect.primaryConstructor
+import kotlin.reflect.starProjectedType
 
 val KOTLIN_BLURPLE = Color(118, 108, 180)
 val KOTLIN_BLUE = Color(5, 148, 214)
 val KOTLIN_PINK = Color(185, 90, 165)
 val KOTLIN_ORANGE = Color(248, 138, 0)
 
+/**
+ * This generates a random color from the kotlin logo.
+ */
 fun generateRandomKotlinColor(): Color {
     when(Random().nextInt(4)) {
         0 -> return KOTLIN_BLURPLE
@@ -35,6 +41,16 @@ fun createEmbedBuilder() = EmbedBuilder()
         .withFooterText("Owned by ${OWNER.name}#${OWNER.discriminator}")
         .withFooterIcon(OWNER.avatarURL)
         .withColor(generateRandomKotlinColor())
+
+/**
+ * This will automatically scan a module for inner classes extending [ModuleDependentObject] and then register them.
+ */
+fun IModule.scanForModuleDependentObjects(): Unit {
+    this::class.nestedClasses
+            .filter { it.allSupertypes.contains(ModuleDependentObject::class.starProjectedType) }
+            .map { it.primaryConstructor!!.call(this) as ModuleDependentObject }
+            .forEach { register(it) }
+}
 
 /**
  * This checks if a specified event has a field which has an object with the same id as the provided object.
