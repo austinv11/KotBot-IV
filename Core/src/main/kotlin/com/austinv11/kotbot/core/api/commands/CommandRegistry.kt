@@ -74,7 +74,7 @@ object CommandRegistry {
                             if (nargs == 0 && executors.isEmpty()) { //Time for fluent execution :D
                                 TODO("Fluent interpretation is not available yet")
                             } else if (executors.isNotEmpty()) {
-                                executors.sortedWith(Comparator<KFunction<*>> { o1, o2 -> o1.valueParameters.size.compareTo(o2.valueParameters.size) })
+                                executors.sortedWith(Comparator<KFunction<*>> { o1, o2 -> -(o1.valueParameters.size.compareTo(o2.valueParameters.size)) })
                                         .forEach {
                                             val split = splitToNArgs(remainingContent, it.valueParameters.size)
                                             val invocationResult = invokeFunction(event.message, command, it, split)

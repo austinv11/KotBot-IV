@@ -66,7 +66,7 @@ fun main(args: Array<String>) {
                 .registerListener(object : IListener<LoginEvent> {
                     override fun handle(event: LoginEvent) {
                         CLIENT.changePresence(true)
-                        CLIENT.changeStatus(Status.game("${CLIENT.scriptManager.loadedModules.get()}/${CLIENT.scriptManager.totalModules.get()} modules loaded"))
+                        CLIENT.changeStatus(Status.game("Loading ${CLIENT.scriptManager.totalModules.get()} modules..."))
                         LOGGER.info("Successfully logged in as ${event.client.ourUser.name}")
                     }
                 })
@@ -94,9 +94,6 @@ fun main(args: Array<String>) {
                             CLIENT.changePresence(false)
                             CLIENT.changeStatus(Status.empty())
                             CLIENT.dispatcher.unregisterListener(this)
-                        } else {
-                            CLIENT.changePresence(true)
-                            CLIENT.changeStatus(Status.game("${CLIENT.scriptManager.loadedModules.get()}/${CLIENT.scriptManager.totalModules.get()} modules loaded"))
                         }
                     }
                 })
