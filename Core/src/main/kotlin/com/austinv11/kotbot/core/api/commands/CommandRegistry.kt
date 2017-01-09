@@ -77,12 +77,10 @@ object CommandRegistry {
                                 executors.sortedWith(Comparator<KFunction<*>> { o1, o2 -> o1.valueParameters.size.compareTo(o2.valueParameters.size) })
                                         .forEach {
                                             val split = splitToNArgs(remainingContent, it.valueParameters.size)
-                                            if (split.size == nargs) {
-                                                val invocationResult = invokeFunction(event.message, command, it, split)
-                                                if (invocationResult != null) {
-                                                    buffer { invocationResult.parseToMessage(event.channel) }
-                                                    return@handle
-                                                }
+                                            val invocationResult = invokeFunction(event.message, command, it, split)
+                                            if (invocationResult != null) {
+                                                buffer { invocationResult.parseToMessage(event.channel) }
+                                                return@handle
                                             }
                                         }
                                 throw IllegalArgumentException("Unable to properly handle provided arguments!")

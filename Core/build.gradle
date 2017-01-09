@@ -31,6 +31,9 @@ repositories {
     maven { url 'http://dl.bintray.com/kotlin/kotlin-eap-1.1' }
     jcenter()
     maven {
+        url  "http://dl.bintray.com/wasabifx/wasabifx"
+    }
+    maven {
         url  "https://jitpack.io"
     }
 }
