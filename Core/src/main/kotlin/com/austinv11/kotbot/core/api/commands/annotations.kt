@@ -6,4 +6,4 @@ annotation class Executor
 
 @Target(AnnotationTarget.VALUE_PARAMETER)
 @Retention(AnnotationRetention.RUNTIME)
-annotation class Parameter(val description: String, val optional: Boolean = false, val nameOverride: String = "")
+annotation class Parameter(val description: String, val nameOverride: String = "")
