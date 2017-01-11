@@ -29,8 +29,13 @@ class ScriptManager(val client: IDiscordClient) {
         
         task {
             files.forEach {
-                LOGGER.info("Loading module $it")
-                loadModule(it)
+                try {
+                    LOGGER.info("Loading module $it")
+                    loadModule(it)
+                    LOGGER.info("$it successfully loaded!")
+                } catch (e: Throwable) {
+                    LOGGER.error("Unable to load module $it", e)
+                }
             }
         }
         
