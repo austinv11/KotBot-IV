@@ -4,6 +4,7 @@ import com.austinv11.kotbot.core.CLIENT
 import com.austinv11.kotbot.core.config.Config
 import com.austinv11.kotbot.core.util.CommandContext
 import com.austinv11.kotbot.core.util.buffer
+import com.austinv11.kotbot.core.util.coerce
 import com.austinv11.kotbot.core.util.contextMap
 import sx.blah.discord.api.IDiscordClient
 import sx.blah.discord.api.events.IListener
@@ -270,7 +271,16 @@ object CommandRegistry {
                 } else if (any is IEmoji) {
                     return channel.sendMessage(any.toString())
                 } else if (any is EmbedBuilder) {
-                    return channel.sendMessage(any.build())
+                    val embed = any.build()
+                    embed.fields = embed.fields.dropLast(embed.fields.size - EmbedBuilder.FIELD_COUNT_LIMIT).toTypedArray()
+                    embed.title = embed.title.coerce(EmbedBuilder.TITLE_LENGTH_LIMIT)
+                    embed.fields.forEachIndexed { i, fieldObject -> 
+                        embed.fields[i].name = fieldObject.name.coerce(EmbedBuilder.TITLE_LENGTH_LIMIT)
+                        embed.fields[i].value = fieldObject.value.coerce(EmbedBuilder.FIELD_CONTENT_LIMIT)
+                    }
+                    embed.description = embed.description.coerce(EmbedBuilder.DESCRIPTION_CONTENT_LIMIT)
+                    embed.footer.text = embed.footer.text.coerce(EmbedBuilder.FOOTER_CONTENT_LIMIT)
+                    return channel.sendMessage(embed)
                 } else if (any is EmbedObject) {
                     return channel.sendMessage(any)
                 } else {

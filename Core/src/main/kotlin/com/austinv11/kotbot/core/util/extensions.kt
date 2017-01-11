@@ -1,5 +1,6 @@
 package com.austinv11.kotbot.core.util
 
+import com.austinv11.kotbot.core.LOGGER
 import com.austinv11.kotbot.core.OWNER
 import com.austinv11.kotbot.core.api.commands.Command
 import sx.blah.discord.api.events.Event
@@ -53,6 +54,18 @@ fun IModule.scanForModuleDependentObjects(): Unit {
 }
 
 /**
+ * This coerces a string to a given length.
+ * @param length The desired length.
+ * @return The coerced string.
+ */
+fun String.coerce(length: Int): String {
+    if (this.length <= length)
+        return this
+    
+    return this.substring(0, length-3)+"..."
+}
+
+/**
  * This checks if a specified event has a field which has an object with the same id as the provided object.
  * @param obj The object to check for.
  * @param T The object type to search for.
@@ -87,7 +100,14 @@ fun buffer(block: () -> Unit) {
  * This is a simple function wrapper for RequestBuffer.
  */
 fun <T> buffer(block: () -> T): T {
-    return RequestBuffer.request(block).get()
+    return RequestBuffer.request(RequestBuffer.IRequest<T> { 
+        try {
+            return@IRequest block()
+        } catch (e: Throwable) {
+            LOGGER.error("Error caught attempting to send a request!", e)
+            throw e
+        }
+    }).get()
 }
 
 /**
