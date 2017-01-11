@@ -17,6 +17,7 @@ import sx.blah.discord.util.MessageBuilder
 import java.lang.reflect.InvocationTargetException
 import java.util.*
 import kotlin.reflect.*
+import kotlin.reflect.jvm.isAccessible
 import kotlin.reflect.jvm.jvmErasure
 
 object CommandRegistry {
@@ -236,7 +237,7 @@ object CommandRegistry {
             }
         }
         
-        private data class ObjectHolder<out T>(val any: T) {
+        data class ObjectHolder<out T>(val any: T) {
             
             fun parseToMessage(channel: IChannel): IMessage? {
                 if (any == null)
@@ -271,15 +272,16 @@ object CommandRegistry {
                 } else if (any is IEmoji) {
                     return channel.sendMessage(any.toString())
                 } else if (any is EmbedBuilder) {
-                    val embed = any.build()
-                    embed.fields = embed.fields.dropLast(embed.fields.size - EmbedBuilder.FIELD_COUNT_LIMIT).toTypedArray()
-                    embed.title = embed.title.coerce(EmbedBuilder.TITLE_LENGTH_LIMIT)
-                    embed.fields.forEachIndexed { i, fieldObject -> 
-                        embed.fields[i].name = fieldObject.name.coerce(EmbedBuilder.TITLE_LENGTH_LIMIT)
-                        embed.fields[i].value = fieldObject.value.coerce(EmbedBuilder.FIELD_CONTENT_LIMIT)
+                    val embed = any.safeBuild()
+                    embed.fields = embed.fields?.dropLast(Math.max(0, embed.fields.size - EmbedBuilder.FIELD_COUNT_LIMIT))?.toTypedArray()
+                    embed.title = embed.title?.coerce(EmbedBuilder.TITLE_LENGTH_LIMIT)
+                    embed.fields?.forEachIndexed { i, fieldObject -> 
+                        embed.fields[i].name = fieldObject.name?.coerce(EmbedBuilder.TITLE_LENGTH_LIMIT)
+                        embed.fields[i].value = fieldObject.value?.coerce(EmbedBuilder.FIELD_CONTENT_LIMIT)
                     }
-                    embed.description = embed.description.coerce(EmbedBuilder.DESCRIPTION_CONTENT_LIMIT)
-                    embed.footer.text = embed.footer.text.coerce(EmbedBuilder.FOOTER_CONTENT_LIMIT)
+                    embed.description = embed.description?.coerce(EmbedBuilder.DESCRIPTION_CONTENT_LIMIT)
+                    if (embed.footer != null)
+                        embed.footer.text = embed.footer.text?.coerce(EmbedBuilder.FOOTER_CONTENT_LIMIT)
                     return channel.sendMessage(embed)
                 } else if (any is EmbedObject) {
                     return channel.sendMessage(any)
@@ -288,5 +290,17 @@ object CommandRegistry {
                 }
             }
         }
+    }
+    
+    fun EmbedBuilder.safeBuild(): EmbedObject { //Since EmbedBuilder.build() throws exceptions when building fails, we need this to force the build to occur
+        val embedField = this::class.memberProperties.find { it.name == "embed" }!!
+        embedField.isAccessible = true
+        val embed = embedField.get(this) as EmbedObject
+        val fieldsField = this::class.memberProperties.find { it.name == "fields" }!!
+        fieldsField.isAccessible = true
+        val fields = fieldsField.get(this) as List<EmbedObject.EmbedFieldObject>
+        return EmbedObject(embed.title, "rich", embed.description, embed.url, embed.timestamp, embed.color,
+                embed.footer, embed.image, embed.thumbnail, embed.video, embed.provider, embed.author,
+                fields.toTypedArray())
     }
 }
