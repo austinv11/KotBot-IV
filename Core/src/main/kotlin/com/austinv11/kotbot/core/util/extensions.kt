@@ -38,7 +38,7 @@ fun generateRandomKotlinColor(): Color {
 /**
  * This creates a standardized embed builder.
  */
-fun createEmbedBuilder() = EmbedBuilder()
+fun createEmbedBuilder() = SafeEmbedBuilder()
         .withFooterText("Owned by ${OWNER.name}#${OWNER.discriminator}")
         .withFooterIcon(OWNER.avatarURL)
         .withColor(generateRandomKotlinColor())
