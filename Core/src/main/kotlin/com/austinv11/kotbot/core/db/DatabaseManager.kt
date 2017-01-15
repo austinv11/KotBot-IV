@@ -41,6 +41,7 @@ object DatabaseManager {
             const val ID = "id"
             const val USER_ID = "user"
             const val PERMISSION_LEVEL = "permissions"
+            const val GUILD_ID = "guild"
         }
         
         @DatabaseField(columnName = ID, generatedId = true)
@@ -51,5 +52,8 @@ object DatabaseManager {
         
         @DatabaseField(columnName = PERMISSION_LEVEL, canBeNull = false, dataType = DataType.ENUM_STRING)
         var permissions: PermissionLevel = PermissionLevel.BASIC
+        
+        @DatabaseField(columnName = GUILD_ID ,canBeNull = false)
+        var guild: String = ""
     }
 }

@@ -53,7 +53,7 @@ object CommandRegistry {
                         //Getting the command
                         val command = commands.firstOrNull { it.doesCommandMatch(commandName) } ?: return
 
-                        if (command.requiredLevel.ordinal > event.author.retrievePermissionLevel().ordinal) {
+                        if (command.requiredLevel.ordinal > event.author.retrievePermissionLevel(event.guild).ordinal) {
                             buffer { event.channel.sendMessage(Config.missing_permission_message.format(command.requiredLevel.toString())) }
                             return
                         }
