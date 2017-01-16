@@ -16,6 +16,7 @@ import sx.blah.discord.util.MessageBuilder
 import java.lang.reflect.InvocationTargetException
 import java.util.*
 import kotlin.reflect.*
+import kotlin.reflect.jvm.isAccessible
 import kotlin.reflect.jvm.jvmErasure
 
 object CommandRegistry {
@@ -129,6 +130,7 @@ object CommandRegistry {
         private fun invokeFunction(context: IMessage, instance: Any, function: KFunction<*>, args: Array<String?>): ObjectHolder<Any?>? {
             try {
                 val convertedParams = mutableMapOf<KParameter, Any?>()
+                function.isAccessible = true
                 function.valueParameters.forEachIndexed { i, param -> 
                     if (!(param.isOptional || param.type.isMarkedNullable) && args[i] == null)
                         throw Exception()

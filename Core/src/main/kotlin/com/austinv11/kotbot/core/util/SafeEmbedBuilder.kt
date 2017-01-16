@@ -11,7 +11,7 @@ class SafeEmbedBuilder : EmbedBuilder() {
     
     val superEmbed: EmbedObject
         get() {
-            val embedField = this::class.memberProperties.find { it.name == "embed" }!!
+            val embedField = EmbedBuilder::class.memberProperties.find { it.name == "embed" }!!
             embedField.isAccessible = true
             return embedField.get(this) as EmbedObject
         }
@@ -99,7 +99,7 @@ class SafeEmbedBuilder : EmbedBuilder() {
     }
 
     override fun appendField(title: String?, content: String?, inline: Boolean): EmbedBuilder {
-        if (superEmbed.fields.size != FIELD_COUNT_LIMIT)
+        if (superEmbed.fields == null || superEmbed.fields.size != FIELD_COUNT_LIMIT)
             super.appendField(title?.coerce(TITLE_LENGTH_LIMIT), content?.coerce(FIELD_CONTENT_LIMIT), inline)
         return this
     }
