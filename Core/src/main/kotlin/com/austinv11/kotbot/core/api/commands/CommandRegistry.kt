@@ -182,46 +182,35 @@ object CommandRegistry {
                         ?: CLIENT.getVoiceChannelByID(value) 
                         ?: CLIENT.voiceChannels.filter { it.name.equals(value, true) }.firstOrNull()
             } else if (desiredType.isSubtypeOf(IChannel::class.starProjectedType)) {
-                if (value.startsWith("<#") && value.endsWith(">")) { //It's a channel mention
-                    val id = value.removePrefix("<#").removeSuffix(">")
-                    return context.guild.getChannelByID(id) ?: CLIENT.getChannelByID(id)
-                } else {
-                    return context.guild.getChannelsByName(value)?.firstOrNull() 
-                            ?: CLIENT.channels.filter { it.name.equals(value, true) }.firstOrNull()
-                }
+                val value = value.removePrefix("<#").removeSuffix(">")
+                return context.guild.getChannelByID(value) 
+                        ?: CLIENT.getChannelByID(value) 
+                        ?: context.guild.getChannelsByName(value)?.firstOrNull() 
+                        ?: CLIENT.channels.filter { it.name.equals(value, true) }.firstOrNull()
             } else if (desiredType.isSubtypeOf(IGuild::class.starProjectedType)) {
                 return CLIENT.getGuildByID(value) 
                         ?: CLIENT.guilds.filter { it.name.equals(value, true) }.firstOrNull()
             } else if (desiredType.isSubtypeOf(IUser::class.starProjectedType)) {
-                if (value.startsWith("<@") && value.endsWith(">")) { //It's a user mention
-                    val id = value.removePrefix("<@").removeSuffix(">").removePrefix("!")
-                    return context.guild.getUserByID(id) ?: CLIENT.getUserByID(id)
-                } else {
-                    return context.guild.getUsersByName(value, true)?.firstOrNull()
-                            ?: CLIENT.users.filter { it.name.equals(value, true) }.firstOrNull()
-                }
+                val value = value.removePrefix("<@").removeSuffix(">").removePrefix("!")
+                return context.guild.getUserByID(value) 
+                        ?: CLIENT.getUserByID(value) 
+                        ?: context.guild.getUsersByName(value, true)?.firstOrNull()
+                        ?: CLIENT.users.filter { it.name.equals(value, true) }.firstOrNull()
             } else if (desiredType.isSubtypeOf(IMessage::class.starProjectedType)) {
                 return context.guild.getMessageByID(value) ?: CLIENT.getMessageByID(value)
             } else if (desiredType.isSubtypeOf(IRole::class.starProjectedType)) {
-                if (value.startsWith("<@&") && value.endsWith(">")) { //It's a role mention
-                    val id = value.removePrefix("<@&").removeSuffix(">")
-                    return context.guild.getUserByID(id) ?: CLIENT.getUserByID(id)
-                } else {
-                    if (value == "@everyone") {
-                        return context.guild.everyoneRole
-                    } else {
-                        return context.guild.getRolesByName(value)?.firstOrNull()
-                                ?: CLIENT.roles.filter { it.name.equals(value, true) }.firstOrNull()
-                    }
-                }
+                val value = value.removePrefix("<@&").removeSuffix(">")
+                if (value == "@everyone")
+                    return context.guild.everyoneRole
+                return context.guild.getUserByID(value) 
+                        ?: CLIENT.getUserByID(value)
+                        ?: context.guild.getRolesByName(value)?.firstOrNull()
+                        ?: CLIENT.roles.filter { it.name.equals(value, true) }.firstOrNull()
             } else if (desiredType.isSubtypeOf(IEmoji::class.starProjectedType)) {
-                if (value.startsWith("<@") && value.endsWith(">")) { //It's a user mention
-                    val id = value.removePrefix("<:").removeSuffix(">").split(":")[0]
-                    return context.guild.getEmojiByID(id)
-                } else {
-                    return context.guild.getEmojiByID(value) 
-                            ?: context.guild.getEmojiByName(value)
-                }
+                val value = value.removePrefix("<:").removeSuffix(">").split(":")[0]
+                return context.guild.getEmojiByID(value) 
+                        ?: context.guild.getEmojiByID(value) 
+                        ?: context.guild.getEmojiByName(value)
             } else if (desiredType.isSubtypeOf(IInvite::class.starProjectedType)) {
                 return CLIENT.getInviteForCode(value)
             } else if (desiredType.jvmErasure.java.isEnum) {
