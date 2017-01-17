@@ -9,13 +9,10 @@ import sx.blah.discord.handle.obj.IDiscordObject
 import sx.blah.discord.handle.obj.IMessage
 import sx.blah.discord.handle.obj.IUser
 import sx.blah.discord.modules.IModule
-import sx.blah.discord.util.EmbedBuilder
 import sx.blah.discord.util.RequestBuffer
 import java.awt.Color
 import java.util.*
-import kotlin.reflect.allSupertypes
-import kotlin.reflect.primaryConstructor
-import kotlin.reflect.starProjectedType
+import kotlin.reflect.*
 
 val KOTLIN_BLURPLE = Color(118, 108, 180)
 val KOTLIN_BLUE = Color(5, 148, 214)
@@ -33,6 +30,17 @@ fun generateRandomKotlinColor(): Color {
         3 -> return KOTLIN_ORANGE
     }
     return KOTLIN_ORANGE
+}
+
+/**
+ * This checks of this [KType] is a subtype of another class. This also checks nullable types.
+ */
+fun KType.isNullableSubtypeOf(type: KType): Boolean {
+    var type = type
+    if (this.isMarkedNullable)
+        type = type.withNullability(true)
+    
+    return this.isSubtypeOf(type)
 }
 
 /**

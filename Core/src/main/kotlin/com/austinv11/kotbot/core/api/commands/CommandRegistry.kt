@@ -5,6 +5,7 @@ import com.austinv11.kotbot.core.config.Config
 import com.austinv11.kotbot.core.util.CommandContext
 import com.austinv11.kotbot.core.util.buffer
 import com.austinv11.kotbot.core.util.contextMap
+import com.austinv11.kotbot.core.util.isNullableSubtypeOf
 import sx.blah.discord.api.IDiscordClient
 import sx.blah.discord.api.events.IListener
 import sx.blah.discord.api.internal.DiscordEndpoints
@@ -156,51 +157,51 @@ object CommandRegistry {
             if (value == null || value.isEmpty())
                 return null
             
-            if (desiredType.isSubtypeOf(String::class.starProjectedType)) {
+            if (desiredType.isNullableSubtypeOf(String::class.starProjectedType)) {
                 return value
-            } else if (desiredType.isSubtypeOf(Number::class.starProjectedType)) {
-                if (desiredType.isSubtypeOf(Int::class.starProjectedType)) {
+            } else if (desiredType.isNullableSubtypeOf(Number::class.starProjectedType)) {
+                if (desiredType.isNullableSubtypeOf(Int::class.starProjectedType)) {
                     return value.toInt()
-                } else if (desiredType.isSubtypeOf(Double::class.starProjectedType)) {
+                } else if (desiredType.isNullableSubtypeOf(Double::class.starProjectedType)) {
                     return value.toDouble() 
-                } else if (desiredType.isSubtypeOf(Long::class.starProjectedType)) {
+                } else if (desiredType.isNullableSubtypeOf(Long::class.starProjectedType)) {
                     return value.toLong()
-                } else if (desiredType.isSubtypeOf(Float::class.starProjectedType)) {
+                } else if (desiredType.isNullableSubtypeOf(Float::class.starProjectedType)) {
                     return value.toFloat()
-                } else if (desiredType.isSubtypeOf(Byte::class.starProjectedType)) {
+                } else if (desiredType.isNullableSubtypeOf(Byte::class.starProjectedType)) {
                     return value.toByte()
-                } else if (desiredType.isSubtypeOf(Short::class.starProjectedType)) {
+                } else if (desiredType.isNullableSubtypeOf(Short::class.starProjectedType)) {
                     return value.toShort()
                 } else {
                     return null
                 }
-            } else if (desiredType.isSubtypeOf(Boolean::class.starProjectedType)) {
+            } else if (desiredType.isNullableSubtypeOf(Boolean::class.starProjectedType)) {
                 return value.toBoolean()
-            } else if (desiredType.isSubtypeOf(Char::class.starProjectedType)) {
+            } else if (desiredType.isNullableSubtypeOf(Char::class.starProjectedType)) {
                 return value.toCharArray()[0]
-            } else if (desiredType.isSubtypeOf(IVoiceChannel::class.starProjectedType)) {
+            } else if (desiredType.isNullableSubtypeOf(IVoiceChannel::class.starProjectedType)) {
                 return context.guild.getVoiceChannelByID(value) 
                         ?: context.guild.getVoiceChannelsByName(value)?.firstOrNull() 
                         ?: CLIENT.getVoiceChannelByID(value) 
                         ?: CLIENT.voiceChannels.filter { it.name.equals(value, true) }.firstOrNull()
-            } else if (desiredType.isSubtypeOf(IChannel::class.starProjectedType)) {
+            } else if (desiredType.isNullableSubtypeOf(IChannel::class.starProjectedType)) {
                 val value = value.removePrefix("<#").removeSuffix(">")
                 return context.guild.getChannelByID(value) 
                         ?: CLIENT.getChannelByID(value) 
                         ?: context.guild.getChannelsByName(value)?.firstOrNull() 
                         ?: CLIENT.channels.filter { it.name.equals(value, true) }.firstOrNull()
-            } else if (desiredType.isSubtypeOf(IGuild::class.starProjectedType)) {
+            } else if (desiredType.isNullableSubtypeOf(IGuild::class.starProjectedType)) {
                 return CLIENT.getGuildByID(value) 
                         ?: CLIENT.guilds.filter { it.name.equals(value, true) }.firstOrNull()
-            } else if (desiredType.isSubtypeOf(IUser::class.starProjectedType)) {
+            } else if (desiredType.isNullableSubtypeOf(IUser::class.starProjectedType)) {
                 val value = value.removePrefix("<@").removeSuffix(">").removePrefix("!")
                 return context.guild.getUserByID(value) 
                         ?: CLIENT.getUserByID(value) 
                         ?: context.guild.getUsersByName(value, true)?.firstOrNull()
                         ?: CLIENT.users.filter { it.name.equals(value, true) }.firstOrNull()
-            } else if (desiredType.isSubtypeOf(IMessage::class.starProjectedType)) {
+            } else if (desiredType.isNullableSubtypeOf(IMessage::class.starProjectedType)) {
                 return context.guild.getMessageByID(value) ?: CLIENT.getMessageByID(value)
-            } else if (desiredType.isSubtypeOf(IRole::class.starProjectedType)) {
+            } else if (desiredType.isNullableSubtypeOf(IRole::class.starProjectedType)) {
                 val value = value.removePrefix("<@&").removeSuffix(">")
                 if (value == "@everyone")
                     return context.guild.everyoneRole
@@ -208,12 +209,12 @@ object CommandRegistry {
                         ?: CLIENT.getUserByID(value)
                         ?: context.guild.getRolesByName(value)?.firstOrNull()
                         ?: CLIENT.roles.filter { it.name.equals(value, true) }.firstOrNull()
-            } else if (desiredType.isSubtypeOf(IEmoji::class.starProjectedType)) {
+            } else if (desiredType.isNullableSubtypeOf(IEmoji::class.starProjectedType)) {
                 val value = value.removePrefix("<:").removeSuffix(">").split(":")[0]
                 return context.guild.getEmojiByID(value) 
                         ?: context.guild.getEmojiByID(value) 
                         ?: context.guild.getEmojiByName(value)
-            } else if (desiredType.isSubtypeOf(IInvite::class.starProjectedType)) {
+            } else if (desiredType.isNullableSubtypeOf(IInvite::class.starProjectedType)) {
                 return CLIENT.getInviteForCode(value)
             } else if (desiredType.jvmErasure.java.isEnum) {
                 try {
