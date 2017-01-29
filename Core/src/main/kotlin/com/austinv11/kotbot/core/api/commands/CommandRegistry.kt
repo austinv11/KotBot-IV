@@ -78,15 +78,27 @@ object CommandRegistry {
                             if (nargs == 0 && executors.isEmpty()) { //Time for fluent execution :D
                                 TODO("Fluent interpretation is not available yet")
                             } else if (executors.isNotEmpty()) {
-                                executors.sortedWith(Comparator<KFunction<*>> { o1, o2 -> -(o1.valueParameters.size.compareTo(o2.valueParameters.size)) })
-                                        .forEach {
-                                            val split = splitToNArgs(remainingContent, it.valueParameters.size)
-                                            val invocationResult = invokeFunction(event.message, command, it, split)
-                                            if (invocationResult != null) {
-                                                buffer { invocationResult.parseToMessage(event.channel) }
-                                                return@handle
-                                            }
-                                        }
+                                executors.sortedWith(Comparator<KFunction<*>> { o1, o2 ->
+                                    val compareVal = -(o1.valueParameters.size.compareTo(o2.valueParameters.size))
+
+                                    if (compareVal != 0) return@Comparator compareVal
+
+                                    val o1Strings = o1.valueParameters.filter { it.type.isNullableSubtypeOf(String::class.starProjectedType) }.isNotEmpty()
+                                    val o2Strings = o2.valueParameters.filter { it.type.isNullableSubtypeOf(String::class.starProjectedType) }.isNotEmpty()
+                                    if (o1Strings xor o2Strings) {
+                                        if (o1Strings) return@Comparator -1
+                                        else return@Comparator 1
+                                    }
+
+                                    return@Comparator 0
+                                }).forEach {
+                                    val split = splitToNArgs(remainingContent, it.valueParameters.size)
+                                    val invocationResult = invokeFunction(event.message, command, it, split)
+                                    if (invocationResult != null) {
+                                        buffer { invocationResult.parseToMessage(event.channel) }
+                                        return@handle
+                                    }
+                                }
                                 throw IllegalArgumentException("Unable to properly handle provided arguments!")
                             } else {
                                 buffer { event.channel.sendMessage(Config.command_error_format.format("Cannot execute command with $nargs args!")) }
@@ -105,7 +117,7 @@ object CommandRegistry {
         }
         
         private val KFunction<*>.minimumParamCount: Int
-            get() = this.valueParameters.filter { !it.isOptional }.size
+            get() = this.valueParameters.filter { !it.isOptional && !it.type.isMarkedNullable }.size
         
         private fun splitToNArgs(value: String, nargs: Int): Array<String?> {
             if (nargs < 1)
@@ -162,7 +174,11 @@ object CommandRegistry {
             if (desiredType.isNullableSubtypeOf(String::class.starProjectedType)) {
                 return value
             } else if (desiredType.isNullableSubtypeOf(Enum::class.starProjectedType)) {
-                return desiredType.jvmErasure.functions.find { it.name == "valueOf" }!!.javaMethod!!.invoke(null, value.toUpperCase())
+                try {
+                    return desiredType.jvmErasure.java.methods.find { it.name == "valueOf" }!!.invoke(null, value.toUpperCase())
+                } catch (e: Exception) {
+                    throw Exception()
+                }
             } else if (desiredType.isNullableSubtypeOf(Number::class.starProjectedType)) {
                 if (desiredType.isNullableSubtypeOf(Int::class.starProjectedType)) {
                     return value.toInt()
