@@ -5,7 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Core.iml" filepath="$PROJECT_DIR$/.idea/modules/Core.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Core_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Core_main.iml" group="Core" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Core_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Core_test.iml" group="Core" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/KotBot-IV.iml" filepath="$PROJECT_DIR$/.idea/KotBot-IV.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/KotBot-IV.iml" filepath="$PROJECT_DIR$/.idea/modules/KotBot-IV.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Launcher.iml" filepath="$PROJECT_DIR$/.idea/modules/Launcher.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Launcher_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Launcher_main.iml" group="Launcher" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Launcher_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Launcher_test.iml" group="Launcher" />

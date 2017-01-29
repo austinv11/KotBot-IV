@@ -17,7 +17,9 @@ import sx.blah.discord.util.MessageBuilder
 import java.lang.reflect.InvocationTargetException
 import java.util.*
 import kotlin.reflect.*
+import kotlin.reflect.full.functions
 import kotlin.reflect.jvm.isAccessible
+import kotlin.reflect.jvm.javaMethod
 import kotlin.reflect.jvm.jvmErasure
 
 object CommandRegistry {
@@ -159,6 +161,8 @@ object CommandRegistry {
             
             if (desiredType.isNullableSubtypeOf(String::class.starProjectedType)) {
                 return value
+            } else if (desiredType.isNullableSubtypeOf(Enum::class.starProjectedType)) {
+                return desiredType.jvmErasure.functions.find { it.name == "valueOf" }!!.javaMethod!!.invoke(null, value.toUpperCase())
             } else if (desiredType.isNullableSubtypeOf(Number::class.starProjectedType)) {
                 if (desiredType.isNullableSubtypeOf(Int::class.starProjectedType)) {
                     return value.toInt()

@@ -9,19 +9,28 @@
               <CompilerSettings />
             </option>
             <option name="k2jsCompilerArguments">
-              <K2JSCompilerArguments />
+              <K2JSCompilerArguments>
+                <option name="moduleKind" value="plain" />
+              </K2JSCompilerArguments>
             </option>
             <option name="_commonCompilerArguments">
-              <DummyImpl />
+              <DummyImpl>
+                <option name="pluginClasspaths">
+                  <array />
+                </option>
+                <option name="coroutinesWarn" value="true" />
+                <option name="pluginOptions">
+                  <array />
+                </option>
+              </DummyImpl>
             </option>
           </KotlinCompilerInfo>
         </option>
-        <option name="useProjectSettings" value="true" />
         <option name="versionInfo">
           <KotlinVersionInfo>
             <option name="apiLevel" value="1.1" />
             <option name="languageLevel" value="1.1" />
-            <option name="targetPlatformName" value="JVM 1.6" />
+            <option name="targetPlatformName" value="JVM 1.8" />
           </KotlinVersionInfo>
         </option>
       </configuration>
@@ -146,6 +155,7 @@
     <orderEntry type="library" name="Gradle: org.apache.maven:maven-model:3.0.5" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.maven:maven-model-builder:3.0.5" level="project" />
     <orderEntry type="library" name="Gradle: org.apache.maven:maven-repository-metadata:3.0.5" level="project" />
+    <orderEntry type="library" name="KotlinJavaRuntime" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="Core_main" />
 </module>
