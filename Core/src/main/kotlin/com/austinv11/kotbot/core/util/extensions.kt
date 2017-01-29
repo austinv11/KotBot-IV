@@ -9,6 +9,7 @@ import sx.blah.discord.handle.obj.IDiscordObject
 import sx.blah.discord.handle.obj.IMessage
 import sx.blah.discord.handle.obj.IUser
 import sx.blah.discord.modules.IModule
+import sx.blah.discord.util.EmbedBuilder
 import sx.blah.discord.util.RequestBuffer
 import java.awt.Color
 import java.util.*
@@ -46,7 +47,8 @@ fun KType.isNullableSubtypeOf(type: KType): Boolean {
 /**
  * This creates a standardized embed builder.
  */
-fun createEmbedBuilder() = SafeEmbedBuilder()
+fun createEmbedBuilder() = EmbedBuilder()
+        .setLenient(true)
         .withFooterText("Owned by ${OWNER.name}#${OWNER.discriminator}")
         .withFooterIcon(OWNER.avatarURL)
         .withColor(generateRandomKotlinColor())

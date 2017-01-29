@@ -42,7 +42,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
     compile "org.jetbrains.kotlin:kotlin-script-util:$kotlin_version"
-    compile "com.github.austinv11:Discord4j:21e53a1"
+    compile "com.github.austinv11:Discord4j:466e2a9"
     compile "org.xerial:sqlite-jdbc:3.15.1"
     compile "com.j256.ormlite:ormlite-jdbc:5.0"
     compile 'nl.komponents.kovenant:kovenant:3.3.0'
