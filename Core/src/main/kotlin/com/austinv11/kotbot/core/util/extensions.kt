@@ -14,6 +14,7 @@ import sx.blah.discord.util.RequestBuffer
 import java.awt.Color
 import java.util.*
 import kotlin.reflect.*
+import kotlin.reflect.full.*
 
 val KOTLIN_BLURPLE = Color(118, 108, 180)
 val KOTLIN_BLUE = Color(5, 148, 214)

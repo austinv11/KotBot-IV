@@ -16,10 +16,11 @@ import sx.blah.discord.util.EmbedBuilder
 import sx.blah.discord.util.MessageBuilder
 import java.lang.reflect.InvocationTargetException
 import java.util.*
-import kotlin.reflect.*
-import kotlin.reflect.full.functions
+import kotlin.reflect.KFunction
+import kotlin.reflect.KParameter
+import kotlin.reflect.KType
+import kotlin.reflect.full.*
 import kotlin.reflect.jvm.isAccessible
-import kotlin.reflect.jvm.javaMethod
 import kotlin.reflect.jvm.jvmErasure
 
 object CommandRegistry {
